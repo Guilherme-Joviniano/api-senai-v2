@@ -10,6 +10,7 @@ class StudentController {
 
     if (response.error) {
       return res.status(400).json({
+        code: 400,
         error: true,
         message: response.message,
       });
@@ -29,6 +30,7 @@ class StudentController {
 
     if (!id) {
       return res.status(400).json({
+        code: 400,
         error: true,
         message: messages.requiredParamater,
       });
@@ -93,6 +95,7 @@ class StudentController {
 
     if (response.error) {
       return res.status(400).json({
+        code: 400,
         error: true,
         message: response.message,
       });
@@ -153,6 +156,7 @@ class StudentController {
 
     if (!id) {
       return res.status(400).json({
+        code: 400,
         error: true,
         message: messages.requiredParamater,
       });
@@ -162,6 +166,7 @@ class StudentController {
 
     if (response.error) {
       return res.status(400).json({
+        code: 400,
         error: true,
         message: response.message,
       });
