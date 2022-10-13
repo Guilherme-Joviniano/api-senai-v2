@@ -16,7 +16,7 @@ class StudentController {
 
     return res.status(200).json({
       status: 200,
-      data: response,
+      payload: response,
       error: false,
     });
   }
@@ -98,7 +98,7 @@ class StudentController {
 
     return res.status(201).json({
       status: 201,
-      data: ['Created Student'],
+      message: ['Created Student'],
       error: false,
     });
   }
@@ -137,7 +137,7 @@ class StudentController {
 
     return res.status(202).json({
       status: 202,
-      data: ['Succefful updated!'],
+      message: ['Succefful updated!'],
       error: false,
     });
   }
@@ -165,7 +165,7 @@ class StudentController {
 
     return res.status(202).json({
       code: 202,
-      data: ['Suceffull deleted'],
+      message: ['Suceffull deleted'],
       error: false,
     });
   }
