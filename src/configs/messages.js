@@ -4,7 +4,7 @@ export default {
   sucessCreated: 'Successful Created',
   requiredParamater: 'Required Paramter',
   emptyValues: 'Empty Values',
-  emptyQueriesValues: 'Empty querie Value',
+  emptyQueriesValues: 'Empty Queries Values',
   emptyBodyValues: 'Empty body values',
   invalidEmail: 'Invalid Email',
 };
