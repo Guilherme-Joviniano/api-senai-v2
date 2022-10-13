@@ -1,5 +1,6 @@
 import _ from 'underscore';
 import validator from 'validator';
+import messages from '../configs/messages';
 import storeStudentRequiredValues from '../helpers/storeStudentRequiredValues';
 import StudentService from '../services/StudentService';
 
@@ -29,7 +30,7 @@ class StudentController {
     if (!id) {
       return res.status(400).json({
         error: true,
-        message: 'id parameter required',
+        message: messages.requiredParamater,
       });
     }
 
@@ -37,6 +38,7 @@ class StudentController {
 
     if (response.error) {
       return res.status(400).json({
+        code: 400,
         error: true,
         message: response.message,
       });
@@ -63,7 +65,7 @@ class StudentController {
       return res.status(400).json({
         code: 400,
         error: true,
-        message: ['Empty Value!'],
+        message: messages.emptyValues,
       });
     }
 
@@ -74,7 +76,7 @@ class StudentController {
     if (!isSame) {
       return res.status(400).json({
         code: 400,
-        message: ['Missing required values in body'],
+        message: messages.emptyBodyValues,
         error: true,
       });
     }
@@ -82,7 +84,7 @@ class StudentController {
     if (!validator.isEmail(form.email)) {
       return res.status(400).json({
         code: 400,
-        message: ['Not valid email'],
+        message: messages.invalidEmail,
         error: true,
       });
     }
@@ -98,7 +100,7 @@ class StudentController {
 
     return res.status(201).json({
       status: 201,
-      message: ['Created Student'],
+      message: messages.sucessCreated,
       error: false,
     });
   }
@@ -115,14 +117,15 @@ class StudentController {
       return res.status(400).json({
         status: 400,
         error: true,
-        message: [' Missing the query values'],
+        message: messages.emptyQueriesValues,
       });
     }
 
     if (!id) {
       return res.status(400).json({
+        code: 400,
         error: true,
-        message: ['id parameter required'],
+        message: messages.requiredParamater,
       });
     }
 
@@ -130,6 +133,7 @@ class StudentController {
 
     if (response.error) {
       return res.status(400).json({
+        code: 400,
         error: true,
         message: response.message,
       });
@@ -137,7 +141,7 @@ class StudentController {
 
     return res.status(202).json({
       status: 202,
-      message: ['Succefful updated!'],
+      message: messages.sucessUpdated,
       error: false,
     });
   }
@@ -150,7 +154,7 @@ class StudentController {
     if (!id) {
       return res.status(400).json({
         error: true,
-        message: ['id parameter required'],
+        message: messages.requiredParamater,
       });
     }
 
@@ -165,7 +169,7 @@ class StudentController {
 
     return res.status(202).json({
       code: 202,
-      message: ['Suceffull deleted'],
+      message: messages.sucessDeleted,
       error: false,
     });
   }
