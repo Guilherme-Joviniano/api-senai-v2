@@ -1,7 +1,7 @@
 import _ from 'underscore';
 import validator from 'validator';
 import storeStudentRequiredValues from '../helpers/storeStudentRequiredValues';
-import StudentService from '../service/StudentService';
+import StudentService from '../services/StudentService';
 
 class StudentController {
   async index(req, res) {
