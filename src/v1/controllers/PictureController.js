@@ -25,9 +25,11 @@ class PictureController {
             id,
           } = req.params;
 
+          const url = `http://localhost:3333/uploads/${filename}`;
+
           // update student picture
           const response = await StudentService.update({
-            foto: filename,
+            foto: url,
           }, id);
 
           if (!response) {
