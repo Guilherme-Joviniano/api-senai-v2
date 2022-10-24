@@ -2,11 +2,11 @@ import _ from 'underscore';
 import validator from 'validator';
 import messages from '../configs/messages';
 import storeStudentRequiredValues from '../helpers/storeStudentRequiredValues';
-import StudentService from '../services/StudentService';
+import StudentAdapter from '../adapters/StudentAdapter';
 
 class StudentController {
   async index(req, res) {
-    const response = await StudentService.index();
+    const response = await StudentAdapter.index();
 
     if (!response) {
       return res.status(400).json({
@@ -36,7 +36,7 @@ class StudentController {
       });
     }
 
-    const response = await StudentService.show(id);
+    const response = await StudentAdapter.show(id);
 
     if (response.error) {
       return res.status(400).json({
@@ -91,7 +91,7 @@ class StudentController {
       });
     }
 
-    const response = await StudentService.store(form);
+    const response = await StudentAdapter.store(form);
 
     if (response.error) {
       return res.status(400).json({
@@ -132,7 +132,7 @@ class StudentController {
       });
     }
 
-    const response = await StudentService.update(query, id);
+    const response = await StudentAdapter.update(query, id);
 
     if (!response) {
       return res.status(400).json({
@@ -170,7 +170,7 @@ class StudentController {
       });
     }
 
-    const response = await StudentService.delete(id);
+    const response = await StudentAdapter.delete(id);
 
     if (!response) {
       return res.status(400).json({

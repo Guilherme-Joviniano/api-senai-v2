@@ -1,7 +1,7 @@
 import multer from 'multer';
 import messages from '../configs/messages';
 import config from '../configs/multer';
-import StudentService from '../services/StudentService';
+import StudentAdapter from '../adapters/StudentAdapter';
 
 const uploader = multer(config).single('profile_picture');
 
@@ -28,7 +28,7 @@ class PictureController {
           const url = `http://localhost:3333/uploads/${filename}`;
 
           // update student picture
-          const response = await StudentService.update({
+          const response = await StudentAdapter.update({
             foto: url,
           }, id);
 
