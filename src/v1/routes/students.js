@@ -2,8 +2,10 @@ import {
   Router,
 } from 'express';
 
+// controller
 import StudentController from '../controllers/StudentController';
 
+// middlewares
 import {
   isJson,
   hasBody,
