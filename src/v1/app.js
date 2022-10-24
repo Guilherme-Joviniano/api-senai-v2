@@ -1,6 +1,11 @@
 import express from 'express';
 import cors from 'cors';
+import {
+  resolve,
+} from 'path';
+
 import student from './routes/students';
+import picture from './routes/picture';
 
 class App {
   constructor() {
@@ -12,10 +17,12 @@ class App {
   middlewares() {
     this.app.use(express.json());
     this.app.use(cors());
+    this.app.use(express.static(resolve(__dirname, '..', '..', 'uploads')));
   }
 
   routes() {
     this.app.use('/student/', student);
+    this.app.use('/picture/', picture);
   }
 }
 
