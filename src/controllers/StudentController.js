@@ -12,7 +12,7 @@ class StudentController {
       return res.status(400).json({
         code: 400,
         error: true,
-        message: messages.notFounded,
+        message: messages.NOT_FOUNDED,
       });
     }
 
@@ -32,7 +32,7 @@ class StudentController {
       return res.status(400).json({
         code: 400,
         error: true,
-        message: messages.requiredParamater,
+        message: messages.REQUIRED_PARAMETER,
       });
     }
 
@@ -48,7 +48,7 @@ class StudentController {
 
     return res.status(200).json({
       status: 200,
-      data: response,
+      payload: response,
       error: false,
     });
   }
@@ -67,7 +67,7 @@ class StudentController {
       return res.status(400).json({
         code: 400,
         error: true,
-        message: messages.emptyValues,
+        message: messages.EMPTY_VALUES,
       });
     }
 
@@ -78,7 +78,7 @@ class StudentController {
     if (!isSame) {
       return res.status(400).json({
         code: 400,
-        message: messages.emptyBodyValues,
+        message: messages.EMPTY_BODY_VALUES,
         error: true,
       });
     }
@@ -86,7 +86,7 @@ class StudentController {
     if (!validator.isEmail(form.email)) {
       return res.status(400).json({
         code: 400,
-        message: messages.invalidEmail,
+        message: messages.INVALID_EMAIL,
         error: true,
       });
     }
@@ -103,7 +103,7 @@ class StudentController {
 
     return res.status(201).json({
       status: 201,
-      message: messages.sucessCreated,
+      payload: messages.SUCESS_CREATED,
       error: false,
     });
   }
@@ -120,7 +120,7 @@ class StudentController {
       return res.status(400).json({
         status: 400,
         error: true,
-        message: messages.emptyQueriesValues,
+        message: messages.EMPTY_QUERIES_VALUES,
       });
     }
 
@@ -128,11 +128,19 @@ class StudentController {
       return res.status(400).json({
         code: 400,
         error: true,
-        message: messages.requiredParamater,
+        message: messages.REQUIRED_PARAMETER,
       });
     }
 
     const response = await StudentService.update(query, id);
+
+    if (!response) {
+      return res.status(400).json({
+        code: 400,
+        error: true,
+        message: messages.NOT_FOUNDED,
+      });
+    }
 
     if (response.error) {
       return res.status(400).json({
@@ -144,7 +152,7 @@ class StudentController {
 
     return res.status(202).json({
       status: 202,
-      message: messages.sucessUpdated,
+      payload: messages.SUCESS_UPDATED,
       error: false,
     });
   }
@@ -158,11 +166,19 @@ class StudentController {
       return res.status(400).json({
         code: 400,
         error: true,
-        message: messages.requiredParamater,
+        message: messages.REQUIRED_PARAMETER,
       });
     }
 
     const response = await StudentService.delete(id);
+
+    if (!response) {
+      return res.status(400).json({
+        code: 400,
+        error: true,
+        message: messages.NOT_FOUNDED,
+      });
+    }
 
     if (response.error) {
       return res.status(400).json({
@@ -174,7 +190,7 @@ class StudentController {
 
     return res.status(202).json({
       code: 202,
-      message: messages.sucessDeleted,
+      payload: messages.SUCESS_DELETED,
       error: false,
     });
   }

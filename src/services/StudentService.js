@@ -24,50 +24,86 @@ class StudentService {
   }
 
   async show(id) {
-    const response = await Student.show(id);
+    try {
+      const response = await Student.show(id);
 
-    if (!response) {
+      if (!response) {
+        return {
+          error: true,
+          message: 'no found students',
+        };
+      }
+
+      response.id = Number(response.id);
+
+      return response;
+    } catch (e) {
       return {
-        error: true,
-        message: 'no found students',
+        message: e.message,
       };
     }
-
-    response.id = Number(response.id);
-
-    return response;
   }
 
   async store(body) {
-    const response = await Student.store(body);
+    try {
+      const response = await Student.store(body);
 
-    if (response.error) {
-      return response.error;
+      if (response.error) {
+        return response.error;
+      }
+
+      return true;
+    } catch (e) {
+      return {
+        message: e.message,
+      };
     }
-
-    return true;
   }
 
   async update(query, id) {
-    const updatedString = Object.entries(query).map(([key, value]) => `${key} = '${value}'`).join(' ');
+    try {
+      const student = await this.show(id);
 
-    const response = await Student.update(updatedString, id);
+      if (student.error) {
+        return false;
+      }
 
-    if (response.error) {
-      return response.error;
+      const updatedString = Object.entries(query).map(([key, value]) => `${key} = '${value}'`).join(' ');
+
+      const response = await Student.update(updatedString, id);
+
+      if (response.error) {
+        return response.error;
+      }
+
+      return true;
+    } catch (e) {
+      return {
+        message: e.message,
+      };
     }
-
-    return true;
   }
 
   async delete(id) {
-    const response = await Student.delete(id);
+    try {
+      const student = await this.show(id);
 
-    if (response.error) {
-      return response.error;
+      if (student.error) {
+        return false;
+      }
+
+      const response = await Student.delete(id);
+
+      if (response.error) {
+        return response.error;
+      }
+
+      return true;
+    } catch (e) {
+      return {
+        message: e.message,
+      };
     }
-
-    return true;
   }
 }
 
