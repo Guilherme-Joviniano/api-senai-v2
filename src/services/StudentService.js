@@ -6,10 +6,7 @@ class StudentService {
       const response = await Student.index();
 
       if (!response) {
-        return {
-          error: true,
-          message: 'no found students',
-        };
+        return false;
       }
 
       const students = response.map((student) => {
@@ -21,7 +18,6 @@ class StudentService {
       return students;
     } catch (e) {
       return {
-        error: true,
         message: e.message,
       };
     }
@@ -46,10 +42,7 @@ class StudentService {
     const response = await Student.store(body);
 
     if (response.error) {
-      return {
-        error: true,
-        message: response.error,
-      };
+      return response.error;
     }
 
     return true;

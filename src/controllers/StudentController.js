@@ -8,11 +8,11 @@ class StudentController {
   async index(req, res) {
     const response = await StudentService.index();
 
-    if (response.error) {
+    if (!response) {
       return res.status(400).json({
         code: 400,
         error: true,
-        message: response.message,
+        message: messages.notFounded,
       });
     }
 

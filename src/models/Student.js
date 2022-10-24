@@ -46,7 +46,7 @@ class Student {
   }
 
   async delete(id) {
-    const response = await prisma.$queryRaw`delete from tbl_aluno where id = ${id}`;
+    const response = await prisma.$queryRaw `delete from tbl_aluno where id = ${id}`;
 
     if (response.error) {
       return response.error;

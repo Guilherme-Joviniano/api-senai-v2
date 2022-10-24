@@ -7,4 +7,5 @@ export default {
   emptyQueriesValues: 'Empty Queries Values',
   emptyBodyValues: 'Empty body values',
   invalidEmail: 'Invalid Email',
+  notFounded: 'No data founded',
 };
