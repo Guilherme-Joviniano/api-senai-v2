@@ -1,6 +1,6 @@
 import Student from '../models/Student';
 
-class StudentService {
+class StudentAdapter {
   async index() {
     try {
       const response = await Student.index();
@@ -107,4 +107,4 @@ class StudentService {
   }
 }
 
-export default new StudentService();
+export default new StudentAdapter();
