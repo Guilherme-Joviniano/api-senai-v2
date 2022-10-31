@@ -44,6 +44,10 @@ class CourseController {
       });
     }
 
+    const students = await CursoAdapter.showStudents(id);
+
+    response.students = students;
+
     return res.status(200).json({
       status: 200,
       payload: response,

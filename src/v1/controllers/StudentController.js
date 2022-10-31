@@ -46,6 +46,12 @@ class StudentController {
       });
     }
 
+    const courses = await StudentAdapter.showCourses({
+      studentID: id,
+    });
+
+    response.courses = courses;
+
     return res.status(200).json({
       status: 200,
       payload: response,
@@ -192,6 +198,96 @@ class StudentController {
       code: 202,
       payload: messages.SUCESS_DELETED,
       error: false,
+    });
+  }
+
+  async addCourse(req, res) {
+    const form = req.query;
+
+    const entries = Object.entries(form);
+
+    if (Object.keys(form).length === 0) {
+      return res.status(400).json({
+        code: 400,
+        error: false,
+        message: messages.EMPTY_QUERIES_VALUES,
+      });
+    }
+
+    const hasEmptyValues = entries.map(([, value]) => {
+      if (!value) return false;
+      return true;
+    });
+
+    if (hasEmptyValues.includes(false)) {
+      return res.status(400).json({
+        code: 400,
+        error: true,
+        message: messages.EMPTY_VALUES,
+      });
+    }
+
+    const response = await StudentAdapter.addCourse(form);
+
+    if (!response) {
+      return res.status(400).json({
+        code: 400,
+        error: true,
+        message: messages.NOT_FOUNDED,
+      });
+    }
+    if (response.error) {
+      return res.status(400).json({
+        code: 400,
+        error: true,
+        message: response.error,
+      });
+    }
+
+    return res.status(200).json({
+      code: 200,
+      error: false,
+      payload: messages.SUCESS_CREATED,
+    });
+  }
+
+  async showCourses(req, res) {
+    const {
+      id,
+    } = req.params;
+
+    if (!id) {
+      return res.status(400).json({
+        code: 400,
+        error: true,
+        message: messages.REQUIRED_PARAMETER,
+      });
+    }
+
+    const response = await StudentAdapter.showCourses({
+      studentID: id,
+    });
+
+    if (!response) {
+      return res.status(400).json({
+        code: 400,
+        error: true,
+        message: messages.NOT_FOUNDED,
+      });
+    }
+
+    if (response.error) {
+      return res.status(500).json({
+        code: 400,
+        error: true,
+        message: response.error,
+      });
+    }
+
+    return res.status(200).json({
+      code: 200,
+      error: false,
+      payload: response,
     });
   }
 }

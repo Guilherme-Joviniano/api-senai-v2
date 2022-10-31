@@ -1,4 +1,5 @@
 import Course from '../models/Course';
+import StudentCourse from '../models/StudentCourse';
 
 class CourseAdapter {
   async index() {
@@ -99,6 +100,32 @@ class CourseAdapter {
       }
 
       return true;
+    } catch (e) {
+      return {
+        message: e.message,
+      };
+    }
+  }
+
+  async showStudents({
+    id,
+  }) {
+    try {
+      const course = await this.show(id);
+
+      if (!course) {
+        return false;
+      }
+
+      const response = await StudentCourse.showByCourse({
+        id,
+      });
+
+      if (response.error) {
+        return response.error;
+      }
+
+      return response;
     } catch (e) {
       return {
         message: e.message,

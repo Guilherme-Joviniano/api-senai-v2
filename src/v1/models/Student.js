@@ -54,6 +54,12 @@ class Student {
 
     return response;
   }
+
+  async getLastId() {
+    const id = await prisma.$queryRaw `select id from tbl_aluno order by id desc limit 1`;
+
+    return id;
+  }
 }
 
 export default new Student();

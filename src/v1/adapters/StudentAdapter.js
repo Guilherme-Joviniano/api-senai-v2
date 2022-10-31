@@ -1,4 +1,6 @@
 import Student from '../models/Student';
+import CursoAdapter from './CursoAdapter';
+import StudentCourse from '../models/StudentCourse';
 
 class StudentAdapter {
   async index() {
@@ -26,7 +28,6 @@ class StudentAdapter {
   async show(id) {
     try {
       const response = await Student.show(id);
-
       if (!response) {
         return {
           error: true,
@@ -99,6 +100,65 @@ class StudentAdapter {
       }
 
       return true;
+    } catch (e) {
+      return {
+        message: e.message,
+      };
+    }
+  }
+
+  async addCourse({
+    studentID,
+    courseID,
+    status,
+    matricula,
+  }) {
+    try {
+      const student = await this.show(studentID);
+      const course = await CursoAdapter.show(courseID);
+
+      if (!student || !course) {
+        return false;
+      }
+
+      const response = await StudentCourse.store({
+        studentID,
+        courseID,
+        status,
+        matricula,
+      });
+
+      if (response.error) {
+        return response.error;
+      }
+
+      return true;
+    } catch (e) {
+      return {
+        message: e.message,
+      };
+    }
+  }
+
+  async showCourses({
+    studentID,
+  }) {
+    try {
+      const student = await this.show(studentID);
+
+      if (!student) {
+        return false;
+      }
+
+      const response = await StudentCourse.show({
+        studentID,
+      });
+
+      if (response.error) {
+        return response.error;
+      }
+
+      return response;
     } catch (e) {
       return {
         message: e.message,
