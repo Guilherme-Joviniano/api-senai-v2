@@ -1,21 +1,21 @@
-import Student from '../models/Student';
+import Course from '../models/Course';
 
-class StudentAdapter {
+class CourseAdapter {
   async index() {
     try {
-      const response = await Student.index();
+      const response = await Course.index();
 
       if (!response) {
         return false;
       }
 
-      const students = response.map((student) => {
-        const refactorResponse = student;
-        refactorResponse.id = Number(student.id);
+      const courses = response.map((course) => {
+        const refactorResponse = course;
+        refactorResponse.id = Number(course.id);
         return refactorResponse;
       }); // filter bigint to number
 
-      return students;
+      return courses;
     } catch (e) {
       return {
         message: e.message,
@@ -25,16 +25,16 @@ class StudentAdapter {
 
   async show(id) {
     try {
-      const response = await Student.show(id);
+      const response = await Course.show(id);
 
       if (!response) {
         return {
           error: true,
-          message: 'no found students',
+          message: 'no found Courses',
         };
       }
 
-      response.id = Number(response.id);
+      response[0].id = Number(response[0].id);
 
       return response;
     } catch (e) {
@@ -46,7 +46,7 @@ class StudentAdapter {
 
   async store(body) {
     try {
-      const response = await Student.store(body);
+      const response = await Course.store(body);
 
       if (response.error) {
         return response.error;
@@ -62,15 +62,15 @@ class StudentAdapter {
 
   async update(query, id) {
     try {
-      const student = await this.show(id);
+      const course = await this.show(id);
 
-      if (student.error) {
+      if (course.error) {
         return false;
       }
 
       const updatedString = Object.entries(query).map(([key, value]) => `${key} = '${value}'`).join(' '); // ORM
 
-      const response = await Student.update(updatedString, id);
+      const response = await Course.update(updatedString, id);
 
       if (response.error) {
         return response.error;
@@ -86,13 +86,13 @@ class StudentAdapter {
 
   async delete(id) {
     try {
-      const student = await this.show(id);
+      const course = await this.show(id);
 
-      if (student.error) {
+      if (course.error) {
         return false;
       }
 
-      const response = await Student.delete(id);
+      const response = await Course.delete(id);
 
       if (response.error) {
         return response.error;
@@ -107,4 +107,4 @@ class StudentAdapter {
   }
 }
 
-export default new StudentAdapter();
+export default new CourseAdapter();

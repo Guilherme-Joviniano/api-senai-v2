@@ -6,6 +6,7 @@ import {
 
 import student from './routes/students';
 import picture from './routes/picture';
+import course from './routes/course';
 
 class App {
   constructor() {
@@ -17,12 +18,13 @@ class App {
   middlewares() {
     this.app.use(express.json());
     this.app.use(cors());
-    this.app.use('/uploads/', express.static(resolve(__dirname, '../', '../', 'uploads')));
+    this.app.use('/v1/uploads/', express.static(resolve(__dirname, '../', '../', 'uploads')));
   }
 
   routes() {
-    this.app.use('/student/', student);
-    this.app.use('/picture/', picture);
+    this.app.use('/v1/student/', student);
+    this.app.use('/v1/course/', course);
+    this.app.use('/v1/picture/', picture);
   }
 }
 
