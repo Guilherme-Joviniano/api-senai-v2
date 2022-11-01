@@ -2,13 +2,13 @@ import prisma from '../configs/database';
 
 class Student {
   async index() {
-    const response = await prisma.$queryRaw `SELECT * FROM tbl_aluno ORDER BY id DESC`;
+    const response = await prisma.$queryRaw`SELECT * FROM tbl_aluno ORDER BY id DESC`;
 
     return response.length > 0 ? response : false;
   }
 
   async show(id) {
-    const response = await prisma.$queryRaw `SELECT * FROM tbl_aluno WHERE id = ${id}`;
+    const response = await prisma.$queryRaw`SELECT * FROM tbl_aluno WHERE id = ${id}`;
 
     return response.length > 0 ? response[0] : false;
   }
@@ -46,7 +46,7 @@ class Student {
   }
 
   async delete(id) {
-    const response = await prisma.$queryRaw `delete from tbl_aluno where id = ${id}`;
+    const response = await prisma.$queryRaw`delete from tbl_aluno where id = ${id}`;
 
     if (response.error) {
       return response.error;
@@ -56,7 +56,7 @@ class Student {
   }
 
   async getLastId() {
-    const id = await prisma.$queryRaw `select id from tbl_aluno order by id desc limit 1`;
+    const id = await prisma.$queryRaw`select id from tbl_aluno order by id desc limit 1`;
 
     return id;
   }

@@ -1,8 +1,8 @@
-import _ from 'underscore';
-import validator from 'validator';
-import messages from '../configs/messages';
-import storeStudentRequiredValues from '../helpers/storeStudentRequiredValues';
-import StudentAdapter from '../adapters/StudentAdapter';
+import _ from "underscore";
+import validator from "validator";
+import messages from "../configs/messages";
+import storeStudentRequiredValues from "../helpers/storeStudentRequiredValues";
+import StudentAdapter from "../adapters/StudentAdapter";
 
 class StudentController {
   async index(req, res) {
@@ -24,9 +24,7 @@ class StudentController {
   }
 
   async show(req, res) {
-    const {
-      id,
-    } = req.params;
+    const { id } = req.params;
 
     if (!id) {
       return res.status(400).json({
@@ -77,9 +75,14 @@ class StudentController {
       });
     }
 
-    const intersected = _.intersection(storeStudentRequiredValues, Object.keys(form));
+    const intersected = _.intersection(
+      storeStudentRequiredValues,
+      Object.keys(form)
+    );
 
-    const isSame = storeStudentRequiredValues.every((el) => intersected.includes(el));
+    const isSame = storeStudentRequiredValues.every((el) =>
+      intersected.includes(el)
+    );
 
     if (!isSame) {
       return res.status(400).json({
@@ -97,14 +100,31 @@ class StudentController {
       });
     }
 
-    const response = await StudentAdapter.store(form);
+    // dividir o processamento dos dados tirando o curso aq e pegar o ID criado via tal comando abaixo
+    // START TRANSACTION;
+    //   INSERT INTO tbl_aluno (nome, foto, sexo, rg, cpf, email, telefone, celular, data_nascimento) VALUES ();
+    //   SELECT LAST_INSERT_ID();
+    // COMMIT;
 
-    if (response.error) {
+    // alterar para student a resposta
+    const student = await StudentAdapter.store(form);
+
+    if (student.error) {
       return res.status(400).json({
         code: 400,
         error: true,
         message: response.message,
       });
+    }
+
+    // pegar o id e atribuir os cursos informados com seu respectivo ID e seus respectivos detalhes
+
+    const { curso } = form;
+    const { id } = student;
+
+    const response = StudentAdapter.addCourse(curso, id);
+
+    if (!response) {
     }
 
     return res.status(201).json({
@@ -115,12 +135,8 @@ class StudentController {
   }
 
   async update(req, res) {
-    const {
-      query,
-    } = req;
-    const {
-      id,
-    } = req.params;
+    const { query } = req;
+    const { id } = req.params;
 
     if (!query) {
       return res.status(400).json({
@@ -164,9 +180,7 @@ class StudentController {
   }
 
   async delete(req, res) {
-    const {
-      id,
-    } = req.params;
+    const { id } = req.params;
 
     if (!id) {
       return res.status(400).json({
@@ -201,60 +215,8 @@ class StudentController {
     });
   }
 
-  async addCourse(req, res) {
-    const form = req.query;
-
-    const entries = Object.entries(form);
-
-    if (Object.keys(form).length === 0) {
-      return res.status(400).json({
-        code: 400,
-        error: false,
-        message: messages.EMPTY_QUERIES_VALUES,
-      });
-    }
-
-    const hasEmptyValues = entries.map(([, value]) => {
-      if (!value) return false;
-      return true;
-    });
-
-    if (hasEmptyValues.includes(false)) {
-      return res.status(400).json({
-        code: 400,
-        error: true,
-        message: messages.EMPTY_VALUES,
-      });
-    }
-
-    const response = await StudentAdapter.addCourse(form);
-
-    if (!response) {
-      return res.status(400).json({
-        code: 400,
-        error: true,
-        message: messages.NOT_FOUNDED,
-      });
-    }
-    if (response.error) {
-      return res.status(400).json({
-        code: 400,
-        error: true,
-        message: response.error,
-      });
-    }
-
-    return res.status(200).json({
-      code: 200,
-      error: false,
-      payload: messages.SUCESS_CREATED,
-    });
-  }
-
   async showCourses(req, res) {
-    const {
-      id,
-    } = req.params;
+    const { id } = req.params;
 
     if (!id) {
       return res.status(400).json({
