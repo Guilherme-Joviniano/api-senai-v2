@@ -1,6 +1,6 @@
-import Student from "../models/Student";
-import CursoAdapter from "./CursoAdapter";
-import StudentCourse from "../models/StudentCourse";
+import Student from '../models/Student';
+import CursoAdapter from './CursoAdapter';
+import StudentCourse from '../models/StudentCourse';
 
 class StudentAdapter {
   async index() {
@@ -31,7 +31,7 @@ class StudentAdapter {
       if (!response) {
         return {
           error: true,
-          message: "no found students",
+          message: 'no found students',
         };
       }
 
@@ -53,7 +53,9 @@ class StudentAdapter {
         return response.error;
       }
 
-      return true;
+      const id = Number(response[0].id);
+
+      return id;
     } catch (e) {
       return {
         message: e.message,
@@ -71,7 +73,7 @@ class StudentAdapter {
 
       const updatedString = Object.entries(query)
         .map(([key, value]) => `${key} = '${value}'`)
-        .join(" "); // ORM
+        .join(' '); // ORM
 
       const response = await Student.update(updatedString, id);
 
@@ -109,10 +111,14 @@ class StudentAdapter {
     }
   }
 
-  async addCourse({ courseID, status, matricula }, studentID) {
+  async addCourse({
+    id_curso,
+    status_aluno,
+    matricula,
+  }, studentID) {
     try {
       const student = await this.show(studentID);
-      const course = await CursoAdapter.show(courseID);
+      const course = await CursoAdapter.show(id_curso);
 
       if (!student || !course) {
         return false;
@@ -120,8 +126,8 @@ class StudentAdapter {
 
       const response = await StudentCourse.store({
         studentID,
-        courseID,
-        status,
+        id_curso,
+        status_aluno,
         matricula,
       });
 
@@ -137,7 +143,9 @@ class StudentAdapter {
     }
   }
 
-  async showCourses({ studentID }) {
+  async showCourses({
+    studentID,
+  }) {
     try {
       const student = await this.show(studentID);
 

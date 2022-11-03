@@ -1,8 +1,9 @@
-import _ from "underscore";
-import validator from "validator";
-import messages from "../configs/messages";
-import storeStudentRequiredValues from "../helpers/storeStudentRequiredValues";
-import StudentAdapter from "../adapters/StudentAdapter";
+import _ from 'underscore';
+import validator from 'validator';
+import messages from '../configs/messages';
+import storeStudentRequiredValues from '../helpers/storeStudentRequiredValues';
+import StudentAdapter from '../adapters/StudentAdapter';
+import getMatricula from '../helpers/getMatricula';
 
 class StudentController {
   async index(req, res) {
@@ -24,7 +25,9 @@ class StudentController {
   }
 
   async show(req, res) {
-    const { id } = req.params;
+    const {
+      id,
+    } = req.params;
 
     if (!id) {
       return res.status(400).json({
@@ -77,12 +80,10 @@ class StudentController {
 
     const intersected = _.intersection(
       storeStudentRequiredValues,
-      Object.keys(form)
+      Object.keys(form),
     );
 
-    const isSame = storeStudentRequiredValues.every((el) =>
-      intersected.includes(el)
-    );
+    const isSame = storeStudentRequiredValues.every((el) => intersected.includes(el));
 
     if (!isSame) {
       return res.status(400).json({
@@ -100,31 +101,49 @@ class StudentController {
       });
     }
 
-    // dividir o processamento dos dados tirando o curso aq e pegar o ID criado via tal comando abaixo
-    // START TRANSACTION;
-    //   INSERT INTO tbl_aluno (nome, foto, sexo, rg, cpf, email, telefone, celular, data_nascimento) VALUES ();
-    //   SELECT LAST_INSERT_ID();
-    // COMMIT;
-
     // alterar para student a resposta
-    const student = await StudentAdapter.store(form);
+    const {
+      nome,
+      foto,
+      sexo,
+      rg,
+      cpf,
+      email,
+      data_nascimento,
+    } = form;
 
-    if (student.error) {
+    const studentID = await StudentAdapter.store({
+      nome,
+      foto,
+      sexo,
+      rg,
+      cpf,
+      email,
+      data_nascimento,
+    });
+
+    if (studentID.error) {
       return res.status(400).json({
         code: 400,
         error: true,
-        message: response.message,
+        message: studentID.message,
       });
     }
 
-    // pegar o id e atribuir os cursos informados com seu respectivo ID e seus respectivos detalhes
+    const {
+      curso,
+    } = form;
 
-    const { curso } = form;
-    const { id } = student;
+    curso[0].matricula = getMatricula(studentID, curso[0].id_curso, curso.id_curso);
 
-    const response = StudentAdapter.addCourse(curso, id);
+    const response = StudentAdapter.addCourse(curso[0], studentID);
 
     if (!response) {
+      return res.status(400).json({
+        code: 400,
+        error: true,
+        message: null,
+      });
     }
 
     return res.status(201).json({
@@ -135,8 +154,12 @@ class StudentController {
   }
 
   async update(req, res) {
-    const { query } = req;
-    const { id } = req.params;
+    const {
+      query,
+    } = req;
+    const {
+      id,
+    } = req.params;
 
     if (!query) {
       return res.status(400).json({
@@ -180,7 +203,9 @@ class StudentController {
   }
 
   async delete(req, res) {
-    const { id } = req.params;
+    const {
+      id,
+    } = req.params;
 
     if (!id) {
       return res.status(400).json({
@@ -216,7 +241,9 @@ class StudentController {
   }
 
   async showCourses(req, res) {
-    const { id } = req.params;
+    const {
+      id,
+    } = req.params;
 
     if (!id) {
       return res.status(400).json({

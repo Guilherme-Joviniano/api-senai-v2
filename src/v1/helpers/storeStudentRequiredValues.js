@@ -5,4 +5,5 @@ export default [
   'cpf',
   'email',
   'data_nascimento',
+  'curso',
 ];

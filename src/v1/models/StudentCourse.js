@@ -3,12 +3,12 @@ import prisma from '../configs/database';
 class StudentCourse {
   async store({
     studentID,
-    courseID,
-    status,
+    id_curso,
+    status_aluno,
     matricula,
   }) {
     const response = await prisma.$queryRaw `insert into tbl_aluno_curso(id_aluno, id_curso, matricula, status_aluno)
-                                            values (${studentID}, ${courseID}, ${matricula}, ${status})`;
+                                            values (${studentID}, ${id_curso}, ${matricula}, ${status_aluno})`;
 
     if (response.error) {
       return response.error;
