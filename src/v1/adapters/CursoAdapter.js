@@ -10,13 +10,7 @@ class CourseAdapter {
         return false;
       }
 
-      const courses = response.map((course) => {
-        const refactorResponse = course;
-        refactorResponse.id = Number(course.id);
-        return refactorResponse;
-      }); // filter bigint to number
-
-      return courses;
+      return response;
     } catch (e) {
       return {
         message: e.message,
@@ -35,7 +29,9 @@ class CourseAdapter {
         };
       }
 
-      response[0].id = Number(response[0].id);
+      const students = await this.showStudents(id);
+
+      response[0].students = students;
 
       return response;
     } catch (e) {
@@ -107,19 +103,9 @@ class CourseAdapter {
     }
   }
 
-  async showStudents({
-    id,
-  }) {
+  async showStudents(id) {
     try {
-      const course = await this.show(id);
-
-      if (!course) {
-        return false;
-      }
-
-      const response = await StudentCourse.showByCourse({
-        id,
-      });
+      const response = await StudentCourse.showByCourse(id);
 
       if (response.error) {
         return response.error;

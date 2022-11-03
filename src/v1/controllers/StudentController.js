@@ -239,46 +239,6 @@ class StudentController {
       error: false,
     });
   }
-
-  async showCourses(req, res) {
-    const {
-      id,
-    } = req.params;
-
-    if (!id) {
-      return res.status(400).json({
-        code: 400,
-        error: true,
-        message: messages.REQUIRED_PARAMETER,
-      });
-    }
-
-    const response = await StudentAdapter.showCourses({
-      studentID: id,
-    });
-
-    if (!response) {
-      return res.status(400).json({
-        code: 400,
-        error: true,
-        message: messages.NOT_FOUNDED,
-      });
-    }
-
-    if (response.error) {
-      return res.status(500).json({
-        code: 400,
-        error: true,
-        message: response.error,
-      });
-    }
-
-    return res.status(200).json({
-      code: 200,
-      error: false,
-      payload: response,
-    });
-  }
 }
 
 export default new StudentController();

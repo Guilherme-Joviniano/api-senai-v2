@@ -30,7 +30,7 @@ class StudentCourse {
   }
 
   async showByCourse(id) {
-    const response = await prisma.$queryRaw `SELECT CAST(id as float) as id, CAST(id_aluno as float) as id_aluno, CAST(id_curso AS float) as id_curso, matricula, status_aluno FROM tbl_aluno_curso WHERE id_curso = ${id} ORDER BY id DESC`;
+    const response = await prisma.$queryRaw `SELECT CAST(id_aluno as float) id_aluno, CAST(id as float) id, matricula, status_aluno from tbl_aluno_curso where id_curso = ${id};`;
 
     if (response.error) {
       return response.error;

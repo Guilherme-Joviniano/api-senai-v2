@@ -8,7 +8,7 @@ class Student {
   }
 
   async show(id) {
-    const response = await prisma.$queryRaw `SELECT * FROM tbl_aluno WHERE id = ${id}`;
+    const response = await prisma.$queryRaw `SELECT CAST(id as float) id, nome, foto, sexo, rg, cpf, email, telefone, celular, data_nascimento FROM tbl_aluno WHERE id = ${id}`;
 
     return response.length > 0 ? response[0] : false;
   }
@@ -58,7 +58,7 @@ class Student {
   }
 
   async getLastId() {
-    const id = await prisma.$queryRaw `select id from tbl_aluno order by id desc limit 1`;
+    const id = await prisma.$queryRaw `select CAST(id as float) id from tbl_aluno order by id desc limit 1`;
 
     return id;
   }

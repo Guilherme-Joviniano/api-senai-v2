@@ -2,13 +2,13 @@ import prisma from '../configs/database';
 
 class Course {
   async index() {
-    const response = await prisma.$queryRaw `SELECT * FROM tbl_course ORDER BY id DESC`;
+    const response = await prisma.$queryRaw `SELECT CAST(id as float) id, nome, carga_horaria, icone, sigla FROM tbl_course ORDER BY id DESC`;
 
     return response;
   }
 
   async show(id) {
-    const response = await prisma.$queryRaw `SELECT * FROM tbl_course WHERE id = ${id}`;
+    const response = await prisma.$queryRaw `SELECT CAST(id as float) id, nome, carga_horaria, icone, sigla  FROM tbl_course WHERE id = ${id}`;
 
     return response;
   }
