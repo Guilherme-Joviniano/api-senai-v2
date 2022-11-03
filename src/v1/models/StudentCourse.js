@@ -20,7 +20,10 @@ class StudentCourse {
   async show({
     studentID,
   }) {
-    const response = await prisma.$queryRaw `SELECT CAST(id as float) as id, CAST(id_aluno as float) as id_aluno, CAST(id_curso AS float) as id_curso, matricula, status_aluno FROM tbl_aluno_curso WHERE id_aluno = ${studentID} ORDER BY id DESC`;
+    const response = await prisma.$queryRaw `SELECT  tbl_course.nome, tbl_course.carga_horaria, tbl_course.sigla, tbl_aluno_curso.matricula, tbl_aluno_curso.status_aluno from tbl_aluno
+    inner join tbl_aluno_curso on tbl_aluno.id = tbl_aluno_curso.id_aluno
+    inner join tbl_course ON tbl_course.id = tbl_aluno_curso.id_curso
+    WHERE tbl_aluno.id = ${studentID}`;
 
     if (response.error) {
       return response.error;
@@ -30,7 +33,10 @@ class StudentCourse {
   }
 
   async showByCourse(id) {
-    const response = await prisma.$queryRaw `SELECT CAST(id_aluno as float) id_aluno, CAST(id as float) id, matricula, status_aluno from tbl_aluno_curso where id_curso = ${id};`;
+    const response = await prisma.$queryRaw `SELECT tbl_aluno.nome, tbl_aluno.foto, tbl_aluno.email, tbl_aluno.rg, tbl_aluno.cpf, tbl_aluno.data_nascimento, tbl_aluno_curso.matricula, tbl_aluno_curso.status_aluno from tbl_course
+    inner join tbl_aluno_curso on tbl_course.id = tbl_aluno_curso.id_curso
+    inner join tbl_aluno ON tbl_aluno.id = tbl_aluno_curso.id_aluno
+    WHERE tbl_course.id = ${id}`;
 
     if (response.error) {
       return response.error;

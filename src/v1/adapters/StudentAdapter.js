@@ -28,14 +28,13 @@ class StudentAdapter {
   async show(id) {
     try {
       const response = await Student.show(id);
+      
       if (!response) {
         return {
           error: true,
           message: 'no found students',
         };
       }
-
-      response.id = Number(response.id);
 
       return response;
     } catch (e) {

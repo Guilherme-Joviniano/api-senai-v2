@@ -47,12 +47,6 @@ class StudentController {
       });
     }
 
-    const courses = await StudentAdapter.showCourses({
-      studentID: id,
-    });
-
-    response.courses = courses;
-
     return res.status(200).json({
       status: 200,
       payload: response,

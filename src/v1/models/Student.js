@@ -1,16 +1,30 @@
 import prisma from '../configs/database';
+import StudentCourse from './StudentCourse';
 
 class Student {
   async index() {
     const response = await prisma.$queryRaw `SELECT * FROM tbl_aluno ORDER BY id DESC`;
 
+    await Promise.all(response.map(async (student) => {
+      // eslint-disable-next-line no-param-reassign
+      student.curso = await StudentCourse.show({
+        studentID: student.id,
+      });
+    }));
+
     return response.length > 0 ? response : false;
   }
 
   async show(id) {
-    const response = await prisma.$queryRaw `SELECT CAST(id as float) id, nome, foto, sexo, rg, cpf, email, telefone, celular, data_nascimento FROM tbl_aluno WHERE id = ${id}`;
+    const response = await prisma.$queryRaw `SELECT cast(id as float) as id, nome, foto, sexo, rg, cpf, email, telefone, celular, data_nascimento FROM tbl_aluno WHERE id = ${id}`;
 
-    return response.length > 0 ? response[0] : false;
+    if (response.length < 0) return false;
+
+    response[0].courses = await StudentCourse.show({
+      studentID: response[0].id,
+    });
+
+    return response[0];
   }
 
   async store({
