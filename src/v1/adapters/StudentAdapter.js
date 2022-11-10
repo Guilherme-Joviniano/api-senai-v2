@@ -110,11 +110,7 @@ class StudentAdapter {
     }
   }
 
-  async addCourse({
-    id_curso,
-    status_aluno,
-    matricula,
-  }, studentID) {
+  async addCourse({ id_curso, status_aluno, matricula }, studentID) {
     try {
       const student = await this.show(studentID);
       const course = await CursoAdapter.show(id_curso);
@@ -142,9 +138,7 @@ class StudentAdapter {
     }
   }
 
-  async showCourses({
-    studentID,
-  }) {
+  async showCourses({ studentID }) {
     try {
       const student = await this.show(studentID);
 

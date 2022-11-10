@@ -116,23 +116,28 @@ class StudentController {
       });
     }
 
-    const { curso } = form;
+    const { cursos } = form;
 
-    curso[0].matricula = getMatricula(
-      studentID,
-      curso[0].id_curso,
-      curso.id_curso
+    // add the matricula to each course
+    cursos.forEach((c) => {
+      const matricula = getMatricula(studentID, c.id_curso);
+      c.matricula = matricula;
+    });
+
+    // add the courses from the created student
+    await Promise.all(
+      cursos.map(async (c) => {
+        const r = await StudentAdapter.addCourse(c, studentID);
+
+        if (!r) {
+          return res.status(400).json({
+            code: 400,
+            error: true,
+            message: messages.NOT_FOUNDED,
+          });
+        }
+      })
     );
-
-    const response = StudentAdapter.addCourse(curso[0], studentID);
-
-    if (!response) {
-      return res.status(400).json({
-        code: 400,
-        error: true,
-        message: messages.NOT_FOUNDED,
-      });
-    }
 
     return res.status(201).json({
       status: 201,
@@ -159,6 +164,19 @@ class StudentController {
         error: true,
         message: messages.REQUIRED_PARAMETER,
       });
+    }
+
+    const { matricula } = query;
+    const { course } = query;
+
+    // atualizar os dados do curso selecionados
+    if (matricula) {
+      // TODO
+    }
+
+    // adicionar novo curso fora do store
+    if (course) {
+      // TODO
     }
 
     const response = await StudentAdapter.update(query, id);
