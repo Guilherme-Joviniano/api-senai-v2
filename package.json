@@ -18,9 +18,13 @@
     "path": "^0.12.7",
     "prisma": "^4.4.0",
     "underscore": "^1.13.6",
-    "validator": "^13.7.0"
+
+    "validator": "^13.7.0",
+    "zod": "^3.19.1"
   },
   "devDependencies": {
+    "@mermaid-js/mermaid-cli": "^9.1.7",
+    "prisma-erd-generator": "^1.2.2",
     "eslint": "^8.25.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.26.0",

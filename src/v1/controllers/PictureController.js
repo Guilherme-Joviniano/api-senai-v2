@@ -4,19 +4,19 @@ import StudentAdapter from '../adapters/StudentAdapter';
 class PictureController {
   async store(req, res) {
     try {
-      const {
-        filename,
-      } = req.file;
-      const {
-        id,
-      } = req.params;
+      const { filename } = req.file;
+
+      const { id } = req.params;
 
       const url = `http://localhost:3333/v1/uploads/${filename}`;
 
       // update student picture
-      const response = await StudentAdapter.update({
-        foto: url,
-      }, id);
+      const response = await StudentAdapter.update(
+        {
+          foto: url,
+        },
+        id,
+      );
 
       if (!response) {
         return res.status(400).json({

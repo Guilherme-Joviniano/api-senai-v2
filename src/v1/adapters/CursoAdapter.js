@@ -10,6 +10,14 @@ class CourseAdapter {
         return false;
       }
 
+      // add the students for each course
+      await Promise.all(
+        response.map(async (course) => {
+          const students = await this.showStudents(course.id);
+          course.students = students;
+        }),
+      );
+
       return response;
     } catch (e) {
       return {
@@ -65,7 +73,9 @@ class CourseAdapter {
         return false;
       }
 
-      const updatedString = Object.entries(query).map(([key, value]) => `${key} = '${value}'`).join(' '); // ORM
+      const updatedString = Object.entries(query)
+        .map(([key, value]) => `${key} = '${value}'`)
+        .join(' '); // ORM
 
       const response = await Course.update(updatedString, id);
 
